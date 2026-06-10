@@ -9,6 +9,8 @@ public class SkyblockValueAlertsClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		PriceService.start();
 		NotificationOverlay.init();
+		InventoryMonitor.init();
+		SackAlerts.init();
 		SkyblockValueAlerts.LOGGER.info("SkyBlock Value Alerts client ready, watching pickups worth over {} coins.",
 				NotificationOverlay.formatCoins(ItemValueChecker.VALUE_THRESHOLD));
 	}

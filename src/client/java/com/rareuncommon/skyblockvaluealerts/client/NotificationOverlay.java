@@ -16,7 +16,6 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.ItemStack;
 
 /** Renders alert boxes in the top right corner of the HUD and plays the alert sound. */
 public final class NotificationOverlay {
@@ -43,10 +42,10 @@ public final class NotificationOverlay {
 	}
 
 	/** Adds a notification and plays the alert sound. Must be called on the render thread. */
-	public static void push(ItemStack stack, int count, double unitValue, double totalValue, String source) {
+	public static void push(Component itemName, int count, double unitValue, double totalValue, String source) {
 		Component name = count > 1
-				? Component.literal(count + "x ").append(stack.getHoverName())
-				: stack.getHoverName().copy();
+				? Component.literal(count + "x ").append(itemName)
+				: itemName.copy();
 		Component value = Component.literal(formatCoins(totalValue) + " coins (" + source
 				+ (count > 1 ? ", " + formatCoins(unitValue) + " each" : "") + ")");
 		NOTIFICATIONS.add(new Notification(Component.literal("Valuable pickup!"), name, value,
