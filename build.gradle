@@ -18,7 +18,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"modid" {
+		"skyblock_value_alerts" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}

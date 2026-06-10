@@ -1,31 +1,29 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "skyblock_value_alerts",
 	"version": "${version}",
-	"name": "Example Mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "SkyBlock Value Alerts",
+	"description": "Shows a HUD notification and plays a sound whenever you pick up an item worth over 1,000,000 coins on the Hypixel SkyBlock bazaar or auction house.",
 	"authors": [
-		"Me!"
+		"Rareuncommon"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
 		"sources": "https://github.com/rareuncommon/claude-test"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
-	"environment": "*",
+	"icon": "assets/skyblock_value_alerts/icon.png",
+	"environment": "client",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"com.rareuncommon.skyblockvaluealerts.SkyblockValueAlerts"
 		],
 		"client": [
-			"com.example.client.ExampleModClient"
+			"com.rareuncommon.skyblockvaluealerts.client.SkyblockValueAlertsClient"
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
 		{
-			"config": "modid.client.mixins.json",
+			"config": "skyblock_value_alerts.client.mixins.json",
 			"environment": "client"
 		}
 	],

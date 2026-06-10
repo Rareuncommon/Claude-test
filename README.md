@@ -1,7 +1,43 @@
-# Example Mod — Fabric for Minecraft 26.1.2
+# SkyBlock Value Alerts
 
-A basic [Fabric](https://fabricmc.net/) mod skeleton targeting **Minecraft 26.1.2**, based on the
-official [fabric-example-mod](https://github.com/FabricMC/fabric-example-mod) template.
+A client-side [Fabric](https://fabricmc.net/) mod for **Minecraft 26.1.2** and **Hypixel SkyBlock**.
+Whenever you pick up an item worth more than **1,000,000 coins** — by bazaar instant-sell value or
+auction house lowest BIN — a notification appears in the top-right corner of the screen for
+**10 seconds** and a level-up sound plays.
+
+## How it works
+
+- A client mixin hooks the vanilla *take item entity* packet — the moment your player visibly
+  collects an item from the ground.
+- The item's SkyBlock id is read from its `minecraft:custom_data` component (`id` at the root,
+  with a legacy `ExtraAttributes.id` fallback).
+- Prices are cached in memory and refreshed every 5 minutes on a background thread:
+  - **Bazaar instant-sell**: the official, key-less Hypixel endpoint
+    `https://api.hypixel.net/v2/skyblock/bazaar`
+  - **Auction lowest BIN**: `https://hysky.de/api/auctions/lowestbins`
+    (the aggregation backend used by the Skyblocker mod)
+- On pickup, the higher of the two unit prices is used. If `stack count × unit price` is at
+  least 1,000,000 coins, an alert is shown with the item name, total value, and price source.
+  Repeat alerts for the same item id are suppressed for 3 seconds.
+
+## Tuning
+
+Constants in code, all in `src/client/java/com/rareuncommon/skyblockvaluealerts/client/`:
+
+| Constant | Default | Meaning |
+|---|---|---|
+| `ItemValueChecker.VALUE_THRESHOLD` | 1,000,000 | Coin value that triggers an alert |
+| `NotificationOverlay.DURATION_MS` | 10,000 | How long a notification stays on screen |
+| `PriceService.REFRESH_INTERVAL_MINUTES` | 5 | Price cache refresh interval |
+
+## Limitations
+
+- Pickup detection covers items collected from the ground (the vanilla pickup animation).
+  Items that go straight into sacks, or are bought from menus/NPCs, do not fire that packet.
+- Price lookup matches the item's plain SkyBlock id. Items whose market listing uses a
+  different id (enchanted books, pets, attribute shards, etc.) may not be priced.
+- Alerts only start once the first price refresh has completed (a few seconds after launch,
+  requires internet access to the two endpoints above).
 
 ## Versions
 
@@ -14,59 +50,21 @@ official [fabric-example-mod](https://github.com/FabricMC/fabric-example-mod) te
 | Java          | 25               |
 | Gradle        | 9.4.1 (wrapper)  |
 
-Note: as of Minecraft 26.1, Fabric uses Mojang's official mappings (Yarn is no longer published),
-and the Gradle plugin id is `net.fabricmc.fabric-loom`. Check current versions at
-<https://fabricmc.net/develop/>.
-
-## Requirements
-
-- JDK 25 (Minecraft 26.1+ requires Java 25)
+As of Minecraft 26.1, Fabric uses Mojang's official names (Yarn is no longer published).
+Check current versions at <https://fabricmc.net/develop/>.
 
 ## Building
+
+Requires JDK 25.
 
 ```sh
 ./gradlew build
 ```
 
-The mod jar is produced at `build/libs/modid-1.0.0.jar` (plus a `-sources` jar).
-A GitHub Actions workflow (`.github/workflows/build.yml`) builds the mod and uploads the
-jars as artifacts on every push.
-
-## Project layout
-
-```
-├── build.gradle                  # Loom build configuration
-├── gradle.properties             # Minecraft/Loader/Fabric API versions
-├── settings.gradle               # Plugin repositories + project name
-└── src
-    ├── main                      # Common (client + server) code
-    │   ├── java/com/example
-    │   │   ├── ExampleMod.java           # "main" entrypoint
-    │   │   └── mixin/ExampleMixin.java
-    │   └── resources
-    │       ├── fabric.mod.json           # Mod metadata
-    │       ├── modid.mixins.json
-    │       └── assets/modid/icon.png
-    └── client                    # Client-only code (split source sets)
-        ├── java/com/example/client
-        │   ├── ExampleModClient.java     # "client" entrypoint
-        │   └── mixin/ExampleClientMixin.java
-        └── resources
-            └── modid.client.mixins.json
-```
-
-## Renaming the mod
-
-To make this your own, update the mod id `modid` and the `com.example` package consistently in:
-
-1. `settings.gradle` — `rootProject.name`
-2. `gradle.properties` — `maven_group`, `mod_version`
-3. `src/main/resources/fabric.mod.json` — `id`, `name`, `entrypoints`, `mixins`, `icon`
-4. The two mixin config file names and their `package` fields
-5. `build.gradle` — the `loom.mods` block name
-6. Java package directories under `src/main/java` and `src/client/java`
-7. `src/main/resources/assets/modid/` directory name
+The mod jar is produced at `build/libs/skyblock-value-alerts-1.0.0.jar`. Drop it into your
+`.minecraft/mods` folder together with [Fabric API](https://modrinth.com/mod/fabric-api).
+A GitHub Actions workflow builds the jar and uploads it as an artifact on every push.
 
 ## License
 
-CC0-1.0 — same as the upstream template.
+CC0-1.0
