@@ -68,7 +68,7 @@ public final class InventoryMonitor {
 			for (Map.Entry<String, Integer> entry : current.entrySet()) {
 				int gained = entry.getValue() - previousInventory.getOrDefault(entry.getKey(), 0);
 				if (gained <= 0) continue;
-				Gain gain = pendingGains.computeIfAbsent(entry.getKey(), _ -> new Gain(samples.get(entry.getKey()).copy()));
+				Gain gain = pendingGains.computeIfAbsent(entry.getKey(), key -> new Gain(samples.get(key).copy()));
 				gain.count += gained;
 				gain.lastChangeTick = tick;
 			}
@@ -98,7 +98,7 @@ public final class InventoryMonitor {
 			for (Map.Entry<String, Integer> entry : previousContainer.entrySet()) {
 				int lost = entry.getValue() - counts.getOrDefault(entry.getKey(), 0);
 				if (lost <= 0) continue;
-				Loss loss = recentContainerLosses.computeIfAbsent(entry.getKey(), _ -> new Loss());
+				Loss loss = recentContainerLosses.computeIfAbsent(entry.getKey(), key -> new Loss());
 				loss.count += lost;
 				loss.tick = tick;
 			}

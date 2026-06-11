@@ -1,6 +1,6 @@
 # SkyBlock Value Alerts
 
-A client-side [Fabric](https://fabricmc.net/) mod for **Minecraft 26.1.2** and **Hypixel SkyBlock**.
+A client-side [Fabric](https://fabricmc.net/) mod for **Minecraft 1.21.10** and **Hypixel SkyBlock**.
 Whenever you pick up an item worth more than **1,000,000 coins** — by bazaar instant-sell value or
 auction house lowest BIN — a notification appears in the top-right corner of the screen for
 **10 seconds** and a level-up sound plays.
@@ -66,14 +66,16 @@ Constants in code, all in `src/client/java/com/rareuncommon/skyblockvaluealerts/
 
 | Component     | Version          |
 |---------------|------------------|
-| Minecraft     | 26.1.2           |
+| Minecraft     | 1.21.10          |
 | Fabric Loader | 0.19.3           |
-| Fabric API    | 0.150.0+26.1.2   |
-| Fabric Loom   | 1.16-SNAPSHOT (`net.fabricmc.fabric-loom`) |
-| Java          | 25               |
+| Fabric API    | 0.138.4+1.21.10  |
+| Fabric Loom   | 1.16-SNAPSHOT (`net.fabricmc.fabric-loom-remap`) |
+| Mappings      | Mojang official  |
+| Java          | 21               |
 | Gradle        | 9.4.1 (wrapper)  |
 
-As of Minecraft 26.1, Fabric uses Mojang's official names (Yarn is no longer published).
+The project uses Mojang's official names with the current Fabric toolchain (Yarn is no longer
+published); for pre-26.1 Minecraft versions like 1.21.10 the plugin is the `-remap` variant.
 Check current versions at <https://fabricmc.net/develop/>.
 
 ## Building
@@ -86,7 +88,7 @@ Always build with the bundled Gradle wrapper, from the project folder:
 
 The wrapper downloads Gradle 9.4.1 on first run — do not use a system-installed `gradle`
 older than 9.4, since fabric-loom 1.16 cannot be resolved by it. The build defines a Java
-toolchain, so if JDK 25 isn't installed, Gradle downloads one automatically.
+toolchain, so if JDK 21 isn't installed, Gradle downloads one automatically.
 
 The mod jar is produced at `build/libs/skyblock-value-alerts-1.0.0.jar`. Drop it into your
 `.minecraft/mods` folder together with [Fabric API](https://modrinth.com/mod/fabric-api).

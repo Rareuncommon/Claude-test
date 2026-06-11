@@ -11,10 +11,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 
 /** Renders alert boxes in the top right corner of the HUD and plays the alert sound. */
@@ -22,7 +22,7 @@ public final class NotificationOverlay {
 	/** How long each notification stays on screen. */
 	public static final long DURATION_MS = 10_000;
 
-	private static final Identifier HUD_ELEMENT_ID = Identifier.fromNamespaceAndPath(SkyblockValueAlerts.MOD_ID, "notifications");
+	private static final ResourceLocation HUD_ELEMENT_ID = ResourceLocation.fromNamespaceAndPath(SkyblockValueAlerts.MOD_ID, "notifications");
 	private static final int MARGIN = 4;
 	private static final int PADDING = 5;
 	private static final int ACCENT_WIDTH = 2;
@@ -53,7 +53,7 @@ public final class NotificationOverlay {
 		Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.PLAYER_LEVELUP, 1.0F));
 	}
 
-	private static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
+	private static void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
 		if (NOTIFICATIONS.isEmpty()) return;
 		long now = System.currentTimeMillis();
 		NOTIFICATIONS.removeIf(notification -> now >= notification.expiresAt());
@@ -72,9 +72,9 @@ public final class NotificationOverlay {
 
 			int textX = x + ACCENT_WIDTH + PADDING;
 			int textY = y + PADDING;
-			graphics.text(font, notification.title(), textX, textY, TITLE_COLOR, true);
-			graphics.text(font, notification.name(), textX, textY + lineHeight, NAME_COLOR, true);
-			graphics.text(font, notification.value(), textX, textY + lineHeight * 2, VALUE_COLOR, true);
+			graphics.drawString(font, notification.title(), textX, textY, TITLE_COLOR, true);
+			graphics.drawString(font, notification.name(), textX, textY + lineHeight, NAME_COLOR, true);
+			graphics.drawString(font, notification.value(), textX, textY + lineHeight * 2, VALUE_COLOR, true);
 
 			y += height + MARGIN;
 		}
