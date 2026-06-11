@@ -67,7 +67,7 @@ Constants in code, all in `src/client/java/com/rareuncommon/skyblockvaluealerts/
 | Component     | Version          |
 |---------------|------------------|
 | Minecraft     | 1.21.10          |
-| Fabric Loader | 0.19.3           |
+| Fabric Loader | 0.19.2           |
 | Fabric API    | 0.138.4+1.21.10  |
 | Fabric Loom   | 1.16-SNAPSHOT (`net.fabricmc.fabric-loom-remap`) |
 | Mappings      | Mojang official  |
