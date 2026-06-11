@@ -78,11 +78,15 @@ Check current versions at <https://fabricmc.net/develop/>.
 
 ## Building
 
-Requires JDK 25.
+Always build with the bundled Gradle wrapper, from the project folder:
 
 ```sh
-./gradlew build
+./gradlew build      # Windows: gradlew build
 ```
+
+The wrapper downloads Gradle 9.4.1 on first run — do not use a system-installed `gradle`
+older than 9.4, since fabric-loom 1.16 cannot be resolved by it. The build defines a Java
+toolchain, so if JDK 25 isn't installed, Gradle downloads one automatically.
 
 The mod jar is produced at `build/libs/skyblock-value-alerts-1.0.0.jar`. Drop it into your
 `.minecraft/mods` folder together with [Fabric API](https://modrinth.com/mod/fabric-api).
